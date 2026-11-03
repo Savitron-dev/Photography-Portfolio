@@ -129,6 +129,7 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            cursor: zoom-in;
         }
         
         /* Portfolio Grid */
@@ -148,7 +149,7 @@
             border-radius: 4px;
             aspect-ratio: 1 / 1; 
             background: #111;
-            cursor: pointer;
+            cursor: zoom-in;
         }
         .grid-item img {
             width: 100%;
@@ -162,7 +163,7 @@
             opacity: 0.8;
         }
 
-        /* 🚨 Admin Delete Button Styling 🚨 */
+        /* Admin Delete Button Styling */
         .delete-btn {
             position: absolute;
             top: 10px;
@@ -198,7 +199,7 @@
             cursor: grabbing;
         }
 
-        /* Lightbox Modal */
+        /* Lightbox Modal & Zoomable Container */
         .lightbox {
             display: none;
             position: fixed;
@@ -212,11 +213,24 @@
             align-items: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            overflow: hidden;
         }
         .lightbox.active {
             display: flex;
             opacity: 1;
         }
+        
+        .lightbox-wrapper {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
         .lightbox img {
             max-width: 90vw;
             max-height: 90vh;
@@ -224,11 +238,20 @@
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transform: scale(0.95);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: zoom-in;
+            user-select: none;
+            -webkit-user-drag: none;
         }
+        
         .lightbox.active img {
             transform: scale(1);
         }
+
+        .lightbox img.is-zoomed {
+            cursor: zoom-out;
+        }
+
         .lightbox .close-btn {
             position: absolute;
             top: 20px;
@@ -242,6 +265,16 @@
         }
         .lightbox .close-btn:hover {
             color: #aaa;
+        }
+
+        .zoom-hint {
+            position: absolute;
+            bottom: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            pointer-events: none;
+            text-transform: uppercase;
         }
 
         /* Login Modal & Admin Form */
@@ -372,11 +405,11 @@
                     <div id="gallery-aviation" class="genre-gallery active">
                         <div class="swiper swiper-aviation">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9791.jpg" alt="Aviation"></div>                               
-                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9787-2.jpg" alt="Aviation"></div>                               
-                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_8888.jpg" alt="Aviation"></div>                               
-                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9855.jpg" alt="Aviation"></div>                               
-                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9695.jpg" alt="Aviation"></div>                                
+                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9791.jpg" alt="Aviation" onclick="openLightbox(this)"></div>                               
+                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9787-2.jpg" alt="Aviation" onclick="openLightbox(this)"></div>                               
+                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_8888.jpg" alt="Aviation" onclick="openLightbox(this)"></div>                               
+                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9855.jpg" alt="Aviation" onclick="openLightbox(this)"></div>                               
+                                <div class="swiper-slide"><img src="images/Aviation Photography/IMG_9695.jpg" alt="Aviation" onclick="openLightbox(this)"></div>                                
                             </div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -387,10 +420,10 @@
                     <div id="gallery-wildlife" class="genre-gallery">
                         <div class="swiper swiper-wildlife">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_0757.jpg" alt="Wildlife"></div>                                
-                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_6555-4.jpg" alt="Wildlife"></div>                                
-                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_6543.jpg" alt="Wildlife"></div>                                
-                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_6490-2.jpg" alt="Wildlife"></div>                               
+                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_0757.jpg" alt="Wildlife" onclick="openLightbox(this)"></div>                                
+                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_6555-4.jpg" alt="Wildlife" onclick="openLightbox(this)"></div>                                
+                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_6543.jpg" alt="Wildlife" onclick="openLightbox(this)"></div>                                
+                                <div class="swiper-slide"><img src="images/Wildlife Photography/IMG_6490-2.jpg" alt="Wildlife" onclick="openLightbox(this)"></div>                               
                             </div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -401,10 +434,10 @@
                     <div id="gallery-monochrome" class="genre-gallery">
                         <div class="swiper swiper-monochrome">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="images/Monochrome/IMG_2100.jpg" alt="Monochrome"></div>                                
-                                <div class="swiper-slide"><img src="images/Monochrome/IMG_2138.jpg" alt="Monochrome"></div>                                
-                                <div class="swiper-slide"><img src="images/Monochrome/IMG_2125.jpg" alt="Monochrome"></div>                                
-                                <div class="swiper-slide"><img src="images/Monochrome/IMG_6875-2.jpg" alt="Monochrome"></div>                                  
+                                <div class="swiper-slide"><img src="images/Monochrome/IMG_2100.jpg" alt="Monochrome" onclick="openLightbox(this)"></div>                                
+                                <div class="swiper-slide"><img src="images/Monochrome/IMG_2138.jpg" alt="Monochrome" onclick="openLightbox(this)"></div>                                
+                                <div class="swiper-slide"><img src="images/Monochrome/IMG_2125.jpg" alt="Monochrome" onclick="openLightbox(this)"></div>                                
+                                <div class="swiper-slide"><img src="images/Monochrome/IMG_6875-2.jpg" alt="Monochrome" onclick="openLightbox(this)"></div>                                  
                             </div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -415,10 +448,10 @@
                     <div id="gallery-architecture" class="genre-gallery">
                         <div class="swiper swiper-architecture">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0353.jpg" alt="Architecture"></div>
-                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0414-2.jpg" alt="Architecture"></div>
-                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0524.jpg" alt="Architecture"></div>
-                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0707.jpg" alt="Architecture"></div>
+                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0353.jpg" alt="Architecture" onclick="openLightbox(this)"></div>
+                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0414-2.jpg" alt="Architecture" onclick="openLightbox(this)"></div>
+                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0524.jpg" alt="Architecture" onclick="openLightbox(this)"></div>
+                                <div class="swiper-slide"><img src="images/Architectutre/IMG_0707.jpg" alt="Architecture" onclick="openLightbox(this)"></div>
                             </div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -429,10 +462,10 @@
                     <div id="gallery-landscape" class="genre-gallery">
                         <div class="swiper swiper-landscape">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="images/Landscape/IMG_0532.jpg" alt="Landscape"></div>
-                                <div class="swiper-slide"><img src="images/Landscape/IMG_0456.jpg" alt="Landscape"></div>
-                                <div class="swiper-slide"><img src="images/Landscape/IMG_2011.jpg" alt="Landscape"></div>
-                                <div class="swiper-slide"><img src="images/Landscape/IMG_7464.jpg" alt="Landscape"></div>
+                                <div class="swiper-slide"><img src="images/Landscape/IMG_0532.jpg" alt="Landscape" onclick="openLightbox(this)"></div>
+                                <div class="swiper-slide"><img src="images/Landscape/IMG_0456.jpg" alt="Landscape" onclick="openLightbox(this)"></div>
+                                <div class="swiper-slide"><img src="images/Landscape/IMG_2011.jpg" alt="Landscape" onclick="openLightbox(this)"></div>
+                                <div class="swiper-slide"><img src="images/Landscape/IMG_7464.jpg" alt="Landscape" onclick="openLightbox(this)"></div>
                             </div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -489,10 +522,13 @@
         </div>
     </div>
 
-    <!-- Lightbox Modal -->
+    <!-- Lightbox Modal with Zooming -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="close-btn" onclick="closeLightbox(event)">&times;</span>
-        <img id="lightbox-img" src="" alt="Full Screen Image">
+        <div class="lightbox-wrapper" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="Full Screen Image" onclick="toggleZoom(event)">
+        </div>
+        <span class="zoom-hint">Click image to Zoom • Drag to pan</span>
     </div>
 
     <!-- Global Footer -->
@@ -511,15 +547,11 @@
 
     <!-- Unified Firebase & ImageBB Logic -->
     <script type="module">
-        // 1. Firebase Auth and Firestore (No Storage)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, updateDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         const MASTER_ADMIN_EMAIL = "pragyanaarav@gmail.com";
-        
-        // 2. Your Free ImageBB API Key
-        // Get this instantly for free at api.imgbb.com
         const IMGBB_API_KEY = "df7106fee8d0228e54da779a66a4c6fb";
 
         const firebaseConfig = {
@@ -535,6 +567,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
         // ==========================
         // UI & NAVIGATION FUNCTIONS
         // ==========================
@@ -566,18 +599,86 @@
             window.scrollTo(0,0);
         };
 
+        // ==========================
+        // LIGHTBOX & ZOOM CONTROLS
+        // ==========================
+        let isZoomed = false;
+        let isDragging = false;
+        let startX = 0, startY = 0;
+        let currentX = 0, currentY = 0;
+
         window.openLightbox = function(imgElement) {
-            document.getElementById('lightbox-img').src = imgElement.src;
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgElement.src;
+            resetZoom();
             document.getElementById('lightbox').classList.add('active');
             document.body.style.overflow = 'hidden';
         };
 
         window.closeLightbox = function(event) {
             if (event.target.id === 'lightbox' || event.target.className === 'close-btn') {
+                resetZoom();
                 document.getElementById('lightbox').classList.remove('active');
                 document.body.style.overflow = 'auto';
             }
         };
+
+        window.toggleZoom = function(e) {
+            if (isDragging) return; // Prevent toggling if user was panning
+            const img = document.getElementById('lightbox-img');
+            
+            if (!isZoomed) {
+                // Zoom in centered on click position
+                const rect = img.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left - (rect.width / 2);
+                const offsetY = e.clientY - rect.top - (rect.height / 2);
+                
+                currentX = -offsetX * 0.8;
+                currentY = -offsetY * 0.8;
+                
+                img.style.transform = `scale(1.8) translate(${currentX}px, ${currentY}px)`;
+                img.classList.add('is-zoomed');
+                isZoomed = true;
+            } else {
+                resetZoom();
+            }
+        };
+
+        function resetZoom() {
+            const img = document.getElementById('lightbox-img');
+            if (img) {
+                img.style.transform = 'scale(1) translate(0px, 0px)';
+                img.classList.remove('is-zoomed');
+            }
+            isZoomed = false;
+            currentX = 0;
+            currentY = 0;
+        }
+
+        // Panning when zoomed in
+        const lbImg = document.getElementById('lightbox-img');
+        lbImg.addEventListener('mousedown', (e) => {
+            if (!isZoomed) return;
+            isDragging = false;
+            startX = e.clientX - currentX;
+            startY = e.clientY - currentY;
+            
+            const onMouseMove = (moveEvent) => {
+                isDragging = true;
+                currentX = moveEvent.clientX - startX;
+                currentY = moveEvent.clientY - startY;
+                lbImg.style.transform = `scale(1.8) translate(${currentX}px, ${currentY}px)`;
+            };
+
+            const onMouseUp = () => {
+                window.removeEventListener('mousemove', onMouseMove);
+                window.removeEventListener('mouseup', onMouseUp);
+                setTimeout(() => { isDragging = false; }, 50);
+            };
+
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('mouseup', onMouseUp);
+        });
 
         window.openLoginModal = function() {
             document.getElementById('login-modal').classList.add('active');
@@ -615,38 +716,39 @@
             await signOut(auth);
             switchPage('home');
         };
-        
+
         // Initialize Sortable for Drag and Drop
         const gridElement = document.getElementById('main-portfolio-grid');
         const portfolioSortable = new Sortable(gridElement, {
             animation: 150,
-            disabled: true, // Disabled for normal visitors, enabled for Admin
+            disabled: true,
             onEnd: async function () {
-                // When dragging finishes, calculate and save the new order
-                const items = document.querySelectorAll('#main-portfolio-grid .grid-item');
+                const items = Array.from(gridElement.children);
                 const baseTime = Date.now();
                 const status = document.getElementById('upload-status');
                 
                 if(status) {
                     status.style.color = '#fff';
-                    status.innerText = 'Saving new order...';
+                    status.innerText = 'Saving new order to database...';
                 }
                 
-                let promises = [];
-                items.forEach((item, index) => {
-                    const docId = item.id.replace('photo-', '');
-                    // Assign a slightly older timestamp as we go down the grid to maintain visual order
-                    const newTime = baseTime - (index * 1000); 
-                    promises.push(updateDoc(doc(db, "portfolioImages", docId), {
-                        uploadedAt: newTime
-                    }));
-                });
-                
                 try {
-                    await Promise.all(promises);
+                    const batch = writeBatch(db);
+                    
+                    items.forEach((item, index) => {
+                        const docId = item.id.replace('photo-', '');
+                        if (docId) {
+                            const itemRef = doc(db, "portfolioImages", docId);
+                            const newTime = baseTime - (index * 1000); 
+                            batch.update(itemRef, { uploadedAt: newTime });
+                        }
+                    });
+                    
+                    await batch.commit();
+                    
                     if(status) {
                         status.style.color = '#4ade80';
-                        status.innerText = 'New order saved successfully!';
+                        status.innerText = 'New order saved permanently!';
                         setTimeout(() => { status.innerText = ''; }, 3000);
                     }
                 } catch (error) {
@@ -663,13 +765,12 @@
             const navAdmin = document.getElementById('nav-admin');
             if (isLoggedIn) {
                 navAdmin.style.display = 'inline';
-                // 🚨 ADD THIS: Tells the whole page the Admin is logged in, making delete buttons visible
                 document.body.classList.add('admin-mode');
-                portfolioSortable.option("disabled", false); // Enable Drag & Drop
+                portfolioSortable.option("disabled", false);
             } else {
                 navAdmin.style.display = 'none';
                 document.body.classList.remove('admin-mode');
-                portfolioSortable.option("disabled", true); // Disable Drag & Drop
+                portfolioSortable.option("disabled", true);
                 if (document.getElementById('admin').classList.contains('active')) switchPage('home');
             }
         }
@@ -692,11 +793,6 @@
                 status.innerText = 'Please select an image file first!';
                 return;
             }
-            if (IMGBB_API_KEY === "YOUR_IMGBB_API_KEY_HERE") {
-                status.style.color = '#ff5555';
-                status.innerText = 'Please add your free ImageBB API key in the code!';
-                return;
-            }
 
             status.style.color = '#fff';
             status.innerText = 'Uploading to ImageBB...';
@@ -716,13 +812,11 @@
                 const downloadURL = imgbbData.data.url;
                 status.innerText = 'Saving link to Firestore...';
 
-                // Save to Firestore Database and grab the reference ID
                 const docRef = await addDoc(collection(db, "portfolioImages"), {
                     url: downloadURL,
                     uploadedAt: Date.now()
                 });
 
-                // Instantly inject the new photo into the page with a delete button connected to the new docRef.id
                 const newHTML = `
                     <div class="grid-item" id="photo-${docRef.id}">
                         <button class="delete-btn" onclick="deletePhoto('${docRef.id}')" title="Delete Photo">&times;</button>
@@ -742,42 +836,31 @@
             setTimeout(() => { status.innerText = ''; }, 4000);
         };
 
-        // 🚨 ADD THIS: Function to permanently delete photos from Firestore
         window.deletePhoto = async function(docId) {
-            // Give a warning popup to confirm before deleting
             const confirmDelete = confirm("Are you sure you want to permanently remove this photo from your portfolio?");
             if (!confirmDelete) return;
 
             try {
-                // Delete the link from the Firestore Database using the unique document ID
                 await deleteDoc(doc(db, "portfolioImages", docId));
-                
-                // Instantly remove the photo box from the webpage so you don't have to refresh
                 const photoBox = document.getElementById(`photo-${docId}`);
                 if (photoBox) photoBox.remove();
-                
-                console.log("Photo link successfully removed from database.");
             } catch (error) {
                 console.error("Error deleting document: ", error);
                 alert("Failed to delete photo. Check console for details.");
             }
         };
 
-        // Fetch Photos from Firestore when the page loads
         async function fetchUploadedPhotos() {
             try {
                 const q = query(collection(db, "portfolioImages"), orderBy("uploadedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 const grid = document.getElementById('main-portfolio-grid');
-                
-                // Clear out the hardcoded placeholders so it only shows real cloud photos
                 grid.innerHTML = '';
                 
                 querySnapshot.forEach((documentSnap) => {
                     const data = documentSnap.data();
-                    const docId = documentSnap.id; // We grab the unique ID of every photo
+                    const docId = documentSnap.id;
                     
-                    // Notice we add the id="photo-{docId}" and the delete button here!
                     const newHTML = `
                         <div class="grid-item" id="photo-${docId}">
                             <button class="delete-btn" onclick="deletePhoto('${docId}')" title="Delete Photo">&times;</button>
@@ -791,7 +874,6 @@
         }
 
         fetchUploadedPhotos();
-
     </script>
 </body>
 </html>
