@@ -589,15 +589,36 @@
             if(swipers[genre]) swipers[genre].update();
         };
 
-        window.switchPage = function(pageId) {
+        // Router with URL Hash Support
+        window.switchPage = function(pageId, updateHash = true) {
+            const targetPage = document.getElementById(pageId);
+            if (!targetPage) return;
+
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
+            
+            targetPage.classList.add('active');
             if(pageId === 'home') document.getElementById('nav-home').classList.add('active');
             if(pageId === 'portfolio') document.getElementById('nav-portfolio').classList.add('active');
             if(pageId === 'admin') document.getElementById('nav-admin').classList.add('active');
+            
+            if (updateHash) {
+                window.location.hash = pageId;
+            }
             window.scrollTo(0,0);
         };
+
+        // Load correct page on reload or back/forward browser navigation
+        function handleHashRouting() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && ['home', 'portfolio', 'admin'].includes(hash)) {
+                switchPage(hash, false);
+            } else {
+                switchPage('home', false);
+            }
+        }
+
+        window.addEventListener('hashchange', handleHashRouting);
 
         // ==========================
         // LIGHTBOX & ZOOM CONTROLS
@@ -624,11 +645,10 @@
         };
 
         window.toggleZoom = function(e) {
-            if (isDragging) return; // Prevent toggling if user was panning
+            if (isDragging) return;
             const img = document.getElementById('lightbox-img');
             
             if (!isZoomed) {
-                // Zoom in centered on click position
                 const rect = img.getBoundingClientRect();
                 const offsetX = e.clientX - rect.left - (rect.width / 2);
                 const offsetY = e.clientY - rect.top - (rect.height / 2);
@@ -655,7 +675,6 @@
             currentY = 0;
         }
 
-        // Panning when zoomed in
         const lbImg = document.getElementById('lightbox-img');
         lbImg.addEventListener('mousedown', (e) => {
             if (!isZoomed) return;
@@ -777,6 +796,8 @@
 
         onAuthStateChanged(auth, (user) => {
             updateAdminNav(user && user.email && user.email.toLowerCase() === MASTER_ADMIN_EMAIL.toLowerCase());
+            // Restore active tab from URL hash on initial page load
+            handleHashRouting();
         });
 
         // ==========================
