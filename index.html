@@ -19,6 +19,20 @@
             color: var(--text-color);
             line-height: 1.6;
         }
+
+        /* Prevent Image Downloading/Copying */
+        img {
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+        }
         
         /* Navigation */
         nav {
@@ -572,6 +586,18 @@
         // UI & NAVIGATION FUNCTIONS
         // ==========================
         
+        // Prevent right-click context menu and dragging on all images
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
         const swiperConfig = { spaceBetween: 30, effect: "fade", loop: true, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, pagination: { el: '.swiper-pagination', clickable: true } };
         const swipers = {
             aviation: new Swiper('.swiper-aviation', swiperConfig),
