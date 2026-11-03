@@ -341,16 +341,20 @@
             gap: 15px;
         }
         .profile-pic {
-            width: 40px;
-            height: 40px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             object-fit: cover;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.3s;
+            border: 4px solid #fff; /* Solid white border like the reference image */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6); /* Pop effect */
+            transition: transform 0.3s;
+            margin-bottom: -40px; /* This creates the cool overlapping effect! */
+            position: relative;
+            z-index: 1001;
         }
         .profile-pic:hover {
-            border-color: #fff;
+            transform: scale(1.05); /* Slight enlarge on hover */
         }
 
         /* Global Footer */
@@ -383,7 +387,7 @@
         </div>
         <div>
             <a id="nav-home" class="active" onclick="switchPage('home')">Home</a>
-            <a id="nav-portfolio" onclick="switchPage('portfolio')">Portfolio</a>
+            <a id="nav-gallery" onclick="switchPage('gallery')">Gallery</a>
             <a id="nav-admin" style="display: none;" onclick="switchPage('admin')">Admin</a>
         </div>
     </nav>
@@ -401,7 +405,7 @@
                 </div>
             </div>
         </section>
-
+        
         <!-- Shots Captured Section -->
         <section class="section-bg" style="background-image: url('images/Nature\ Photography/IMG_6465.jpg');">
             <div class="section-overlay" style="background: rgba(0, 0, 0, 0.55);">
@@ -489,11 +493,26 @@
                     
                 </div>
             </div>
-        </section>        
+        </section>   
+
+        <!-- Explore Gallery Bridge Section -->
+         <section class="section-bg" style="background-image: url('images/Nature\ Photography/IMG_6838.jpg'); border-top: 1px solid #222; border-bottom: 1px solid #222;">
+            <div class="section-overlay" style="min-height: 35vh; padding: 150px 20px; background: rgba(0, 0, 0, 0.55);">
+                <div class="content-container">
+                    <h2 class="section-title" style="margin-bottom: 15px; font-size: 2rem;">Explore Full Archive</h2>
+                    <p style="color: #aaa; margin-bottom: 30px; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        Discover my complete collection of photography, spanning across multiple genres, themes, and visual experiments.
+                    </p>
+                    <button class="admin-btn" onclick="switchPage('gallery')" style="background: #fff; color: #000; padding: 14px 35px;">
+                        EXPLORE GALLERY
+                    </button>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <!-- Page 2: Full Portfolio Grid -->
-    <div id="portfolio" class="page">
+    <!-- Page 2: Full Gallery Grid -->
+    <div id="gallery" class="page">
         <div class="content-container">
             <h2 class="section-title">All Works</h2>
             <p style="color: #999; text-align: center; margin-bottom: 30px;">A complete visual archive of my captured moments. Click any image to enlarge.</p>
@@ -614,7 +633,7 @@
             
             targetPage.classList.add('active');
             if(pageId === 'home') document.getElementById('nav-home').classList.add('active');
-            if(pageId === 'portfolio') document.getElementById('nav-portfolio').classList.add('active');
+            if(pageId === 'gallery') document.getElementById('nav-gallery').classList.add('active');
             if(pageId === 'admin') document.getElementById('nav-admin').classList.add('active');
             
             if (updateHash) {
@@ -626,7 +645,7 @@
         // Load correct page on reload or back/forward browser navigation
         window.handleHashRouting = function() {
             const hash = window.location.hash.replace('#', '');
-            if (hash && ['home', 'portfolio', 'admin'].includes(hash)) {
+            if (hash && ['home', 'gallery', 'admin'].includes(hash)) {
                 window.switchPage(hash, false);
             } else {
                 window.switchPage('home', false);
