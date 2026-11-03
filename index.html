@@ -559,44 +559,33 @@
     <!-- Sortable.js Script for Drag & Drop -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
-    <!-- Unified Firebase & ImageBB Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, updateDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        const MASTER_ADMIN_EMAIL = "pragyanaarav@gmail.com";
-        const IMGBB_API_KEY = "df7106fee8d0228e54da779a66a4c6fb";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDZgALHBpcUnv99unmgSvvbu1S070gRxbg",
-            authDomain: "photography-portfolio-f5031.firebaseapp.com",
-            projectId: "photography-portfolio-f5031",
-            storageBucket: "photography-portfolio-f5031.firebasestorage.app",
-            messagingSenderId: "247395156441",
-            appId: "1:247395156441:web:f2d9330a852aaeb42399c8",
-            measurementId: "G-WBXRJ0VZDX"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
+    <!-- UI & Interaction Logic (Loads Immediately) -->
+    <script>
         // ==========================
         // UI & NAVIGATION FUNCTIONS
         // ==========================
         
-        // Prevent right-click context menu and dragging on all images
-        document.addEventListener('contextmenu', function(e) {
+        // Comprehensive Right-Click & Image Protection (Event Capturing Phase)
+        window.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'IMG' || e.target.closest('.grid-item') || e.target.closest('.swiper-slide') || e.target.closest('#lightbox')) {
+                e.preventDefault();
+                return false;
+            }
+        }, true);
+
+        window.addEventListener('dragstart', function(e) {
             if (e.target.tagName === 'IMG') {
                 e.preventDefault();
+                return false;
             }
-        });
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.preventDefault();
+        }, true);
+
+        // Extra safeguard for mobile long-press menus
+        window.addEventListener('touchstart', function(e) {
+            if (e.target.tagName === 'IMG' && !document.body.classList.contains('admin-mode')) {
+                e.target.style.webkitTouchCallout = 'none';
             }
-        });
+        }, { passive: true });
 
         const swiperConfig = { spaceBetween: 30, effect: "fade", loop: true, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, pagination: { el: '.swiper-pagination', clickable: true } };
         const swipers = {
@@ -635,16 +624,16 @@
         };
 
         // Load correct page on reload or back/forward browser navigation
-        function handleHashRouting() {
+        window.handleHashRouting = function() {
             const hash = window.location.hash.replace('#', '');
             if (hash && ['home', 'portfolio', 'admin'].includes(hash)) {
-                switchPage(hash, false);
+                window.switchPage(hash, false);
             } else {
-                switchPage('home', false);
+                window.switchPage('home', false);
             }
         }
 
-        window.addEventListener('hashchange', handleHashRouting);
+        window.addEventListener('hashchange', window.handleHashRouting);
 
         // ==========================
         // LIGHTBOX & ZOOM CONTROLS
@@ -735,6 +724,30 @@
                 document.getElementById('login-modal').classList.remove('active');
             }
         };
+    </script>
+
+    <!-- Unified Firebase & ImageBB Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, updateDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        const MASTER_ADMIN_EMAIL = "pragyanaarav@gmail.com";
+        const IMGBB_API_KEY = "df7106fee8d0228e54da779a66a4c6fb";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZgALHBpcUnv99unmgSvvbu1S070gRxbg",
+            authDomain: "photography-portfolio-f5031.firebaseapp.com",
+            projectId: "photography-portfolio-f5031",
+            storageBucket: "photography-portfolio-f5031.firebasestorage.app",
+            messagingSenderId: "247395156441",
+            appId: "1:247395156441:web:f2d9330a852aaeb42399c8",
+            measurementId: "G-WBXRJ0VZDX"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
         // ==========================
         // AUTHENTICATION LOGIC
@@ -816,14 +829,14 @@
                 navAdmin.style.display = 'none';
                 document.body.classList.remove('admin-mode');
                 portfolioSortable.option("disabled", true);
-                if (document.getElementById('admin').classList.contains('active')) switchPage('home');
+                if (document.getElementById('admin').classList.contains('active')) window.switchPage('home');
             }
         }
 
         onAuthStateChanged(auth, (user) => {
             updateAdminNav(user && user.email && user.email.toLowerCase() === MASTER_ADMIN_EMAIL.toLowerCase());
             // Restore active tab from URL hash on initial page load
-            handleHashRouting();
+            window.handleHashRouting();
         });
 
         // ==========================
@@ -867,7 +880,7 @@
                 const newHTML = `
                     <div class="grid-item" id="photo-${docRef.id}">
                         <button class="delete-btn" onclick="deletePhoto('${docRef.id}')" title="Delete Photo">&times;</button>
-                        <img src="${downloadURL}" alt="New Portfolio Shot" onclick="openLightbox(this)">
+                        <img src="${downloadURL}" alt="New Portfolio Shot" onclick="openLightbox(this)" oncontextmenu="return false;" ondragstart="return false;">
                     </div>`;
                 document.getElementById('main-portfolio-grid').insertAdjacentHTML('afterbegin', newHTML);
                 
@@ -911,7 +924,7 @@
                     const newHTML = `
                         <div class="grid-item" id="photo-${docId}">
                             <button class="delete-btn" onclick="deletePhoto('${docId}')" title="Delete Photo">&times;</button>
-                            <img src="${data.url}" alt="Portfolio Shot" onclick="openLightbox(this)">
+                            <img src="${data.url}" alt="Portfolio Shot" onclick="openLightbox(this)" oncontextmenu="return false;" ondragstart="return false;">
                         </div>`;
                     grid.insertAdjacentHTML('beforeend', newHTML);
                 });
