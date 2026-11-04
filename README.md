@@ -27,7 +27,8 @@ Live Demo: [Insert Live Demo Link Here]
 * **Contact Integration:** Functional contact form for client inquiries and collaborations.
 
 ## 🛠️ Tech Stack
-
+<div align="center">
+  
 * **Frontend:** <br>
   <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" />
 * **Styling:** <br>
@@ -37,6 +38,7 @@ Live Demo: [Insert Live Demo Link Here]
 * **Deployment:** <br>
   <img src="https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white" />
 
+</div>
 ## 🚀 Getting Started
 
 To run this project locally on your machine, follow these instructions.
