@@ -28,12 +28,14 @@ Live Demo: [Insert Live Demo Link Here]
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** [React.js / HTML5]
-* **Styling:** [Tailwind CSS / SASS]
-* **Animations:** [Framer Motion / CSS Transitions]
-* **Deployment:** [Vercel / Netlify / GitHub Pages]
-
-*(Note: Update the technologies above to match your specific project)*
+* **Frontend:** <br>
+  <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" />
+* **Styling:** <br>
+  <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+* **Animations:** <br>
+  <img src="https://img.shields.io/badge/CSS%20Transitions-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white" />
+* **Deployment:** <br>
+  <img src="https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white" />
 
 ## 🚀 Getting Started
 
@@ -41,8 +43,7 @@ To run this project locally on your machine, follow these instructions.
 
 ### Prerequisites
 
-* [Node.js](https://nodejs.org/) (v14 or higher)
-* npm or yarn
+* There is no need for Perquisites as Firebase is used for database which also handled backend.
 
 ### Installation
 
@@ -56,41 +57,28 @@ To run this project locally on your machine, follow these instructions.
    cd photography-portfolio
    ```
 
-3. **Install dependencies:**
+3. **To see Website**
    ```bash
-   npm install
-   # or
-   yarn install
+   open index.html
    ```
 
 4. **Start the development server:**
    ```bash
-   npm run dev
-   # or
-   yarn dev
+   nano index.html
    ```
-
-5. **Open your browser:**
-   Navigate to `http://localhost:3000` to view the portfolio.
 
 ## 📂 Project Structure
 
 ```text
 photography-portfolio/
-├── public/             # Static assets (favicons, etc.)
-│   └── images/         # High-res photography assets
-├── src/
-│   ├── components/     # Reusable UI components (Gallery, Navbar, Footer)
-│   ├── styles/         # Global stylesheets
-│   ├── utils/          # Helper functions and data arrays
-│   └── App.js          # Main application entry point
-├── package.json
+├── images/         # High-res photography assets
+├── indext.html     # Contains main code for the website
 └── README.md
 ```
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/yourusername/photography-portfolio/issues) if you want to contribute.
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Savitron-dev/Photography-Portfolio/issues) if you want to contribute.
 
 ## 📄 License
 
@@ -99,11 +87,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📫 Contact
 
 **[Your Name]**  
-* Website: [yourwebsite.com](https://yourwebsite.com)  
-* Email: [your.email@example.com](mailto:your.email@example.com)  
-* Instagram: [@yourhandle](https://instagram.com/yourhandle)
+* Website: [Photography Portfolio](https://savitron-dev.github.io/Photography-Portfolio/)  
+* Email: [pragyanaarav@gmail.com](mailto:pragyanaarav@gmail.com)  
+* Instagram: [@aarav.jpeg_](https://instagram.com/aarav.jpeg_)
 
 ---
 <div align="center">
-  <i>Designed and developed by <a href="https://github.com/yourusername">Your Name</a></i>
+  <i>Designed and developed by <a href="https://github.com/Savitron-dev">Pragyan Aarav</a></i>
 </div>
