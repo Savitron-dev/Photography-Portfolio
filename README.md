@@ -16,7 +16,7 @@
 
 Welcome to the repository for my Photography Portfolio. This project is designed to be a fast, accessible, and visually striking platform for displaying professional photography. The user interface prioritizes the images, utilizing a clean, distraction-free layout with smooth transitions and optimized image loading.
 
-Live Demo: [Porfolio](https://savitron-dev.github.io/Photography-Portfolio/)
+Live Demo: [Portfolio](https://savitron-dev.github.io/Photography-Portfolio/)
 
 ## ✨ Features
 
