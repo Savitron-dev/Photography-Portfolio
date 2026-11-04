@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a"> <!-- Blends Android notification bar with your theme -->
     <title>Pragyan Aarav | Photography Portfolio</title>
     <!-- Swiper.js CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -50,10 +51,10 @@
         }
         nav h1 { margin: 0; font-size: 1.2rem; letter-spacing: 4px; font-weight: 300; text-transform: uppercase; }
         nav div { display: flex; gap: 30px; }
-        nav a { color: #888; text-decoration: none; cursor: pointer; transition: color 0.3s; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;}
+         nav a { color: #888; text-decoration: none; cursor: pointer; transition: color 0.3s; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;}
         nav a:hover, nav a.active { color: var(--accent-color); }
         
-        .page { display: none; padding-top: 70px; min-height: 100vh; }
+        .page { display: none; padding-top: 70px; min-height: 100dvh; } /* Changed vh to dvh for Android */
         .page.active { display: block; }
 
         /* Full Width Sections */
@@ -70,7 +71,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 50vh;
+            min-height: 50dvh; /* Changed vh to dvh for Android */
         }
         
         .content-container {
@@ -111,15 +112,28 @@
             cursor: pointer;
             border-radius: 30px;
             font-size: 1rem;
-            transition: all 0.3s;
+            transition: transform 0.1s, border-color 0.3s, color 0.3s, background 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
+            -webkit-tap-highlight-color: transparent;
         }
-        .genre-tabs button.active, .genre-tabs button:hover {
+        .genre-tabs button:active {
+            transform: scale(0.95); /* Tactile feedback on Android tap */
+        }
+        .genre-tabs button.active {
             border-color: #fff;
             color: #fff;
             background: rgba(255, 255, 255, 0.1);
         }
+        
+        /* Only apply hover effects on devices with a mouse to prevent sticky Android taps */
+        @media (hover: hover) {
+            .genre-tabs button:hover {
+                border-color: #fff;
+                color: #fff;
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }        
 
         /* Slideshow */
         .genre-gallery {
@@ -221,7 +235,7 @@
             left: 0;
             top: 0;
             width: 100%;
-            height: 100%;
+            height: 100dvh; /* dvh prevents Android UI bar cutoff */
             background-color: rgba(0, 0, 0, 0.95);
             justify-content: center;
             align-items: center;
@@ -325,10 +339,16 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
         }
-        .admin-btn:hover {
-            background: #ccc;
+        .admin-btn:active {
+            transform: scale(0.95); /* Mobile tap feedback */
         }
+        @media (hover: hover) {
+            .admin-btn:hover {
+                background: #ccc;
+            }
+        }        
         #admin-msg {
             color: #ff5555;
             font-size: 0.9rem;
@@ -370,12 +390,63 @@
         footer a:hover { color: #fff; }
         
         @media (max-width: 768px) {
-            .swiper { height: 40vh; }
-            nav { flex-direction: column; gap: 15px; padding: 15px; position: static; }
-            .page { padding-top: 0; }
-            .genre-tabs { flex-wrap: wrap; }
-            .portfolio-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-            .lightbox .close-btn { top: 10px; right: 20px; font-size: 35px; }
+            /* 1. Neatly stack the navigation bar */
+            nav { 
+                flex-direction: column; 
+                gap: 12px; 
+                padding: 15px; 
+                background: rgba(10, 10, 10, 0.98); 
+            }
+            .nav-profile {
+                justify-content: center;
+                width: 100%;
+            }
+            .nav-profile h1 {
+                font-size: 1.1rem;
+            }
+            .profile-pic {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 0px; /* Removes negative margin on mobile so it doesn't block links */
+                border-width: 2px;
+            }
+            nav div {
+                justify-content: center;
+                width: 100%;
+                gap: 20px;
+            }
+            
+            /* 2. CRITICAL FIX: Push the page down so the taller mobile nav doesn't cover content */
+            .page { 
+                padding-top: 135px; 
+                min-height: 100dvh;
+            }
+            
+            /* 3. Optimize galleries and buttons for touch screens */
+            .swiper { height: 45dvh; } 
+            .swiper-button-next, .swiper-button-prev { transform: scale(0.8); } 
+            
+            .genre-tabs { 
+                flex-wrap: wrap; 
+                gap: 8px; 
+                justify-content: center;
+            }
+            .genre-tabs button { 
+                padding: 8px 12px; 
+                font-size: 0.85rem; 
+                flex: 1 1 calc(33% - 10px); /* Organizes tabs into clean rows */
+            }
+            
+            .portfolio-grid { 
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+                gap: 10px; 
+            }
+            .lightbox .close-btn { 
+                top: 10px; right: 15px; font-size: 35px; padding: 10px; 
+            }
+            
+            /* Fixes massive scroll lag on Android/iOS */
+            .section-bg { background-attachment: scroll; } 
         }
     </style>
 </head>
@@ -548,7 +619,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-btn" style="top: 10px; right: 15px; font-size: 30px;" onclick="closeLoginModal(event)">&times;</span>
             <h3 id="auth-title" style="margin-top: 0; letter-spacing: 2px; font-weight: 300; text-transform: uppercase;">Admin Access</h3>
-            <input type="email" id="admin-email" placeholder="Email address (pragyanaarav@gmail.com)">
+            <input type="email" id="admin-email" placeholder="Email address">
             <input type="password" id="admin-pass" placeholder="Password">
             <button class="admin-btn" id="auth-submit-btn" onclick="handleAuthSubmit()">Login</button>
             <span id="admin-msg"></span>
@@ -606,8 +677,16 @@
             }
         }, { passive: true });
 
-        const swiperConfig = { spaceBetween: 30, effect: "fade", loop: true, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, pagination: { el: '.swiper-pagination', clickable: true } };
-        const swipers = {
+        const swiperConfig = { 
+            spaceBetween: 30, 
+            effect: "fade", 
+            loop: true, 
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, 
+            pagination: { el: '.swiper-pagination', clickable: true },
+            // Android & iOS Touch Optimizations
+            touchStartPreventDefault: false, // Prevents slider from blocking vertical page scroll
+            passiveListeners: true // Hardware accelerates touch events for ultra-smooth scrolling
+        };        const swipers = {
             aviation: new Swiper('.swiper-aviation', swiperConfig),
             wildlife: new Swiper('.swiper-wildlife', swiperConfig),
             monochrome: new Swiper('.swiper-monochrome', swiperConfig),
