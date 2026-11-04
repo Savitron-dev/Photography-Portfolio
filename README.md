@@ -29,13 +29,13 @@ Live Demo: [Insert Live Demo Link Here]
 ## 🛠️ Tech Stack
 <div align="center">
   
-* **Frontend:** <br>
+ **Frontend:** <br>
   <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" />
-* **Styling:** <br>
+ **Styling:** <br>
   <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-* **Animations:** <br>
+ **Animations:** <br>
   <img src="https://img.shields.io/badge/CSS%20Transitions-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white" />
-* **Deployment:** <br>
+ **Deployment:** <br>
   <img src="https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white" />
 
 </div>
